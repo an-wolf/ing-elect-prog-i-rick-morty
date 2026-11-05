@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { obtenerPersonajesAlAzar } from '../../api.js'
+import { obtenerPersonajesAlAzar, precargarFotos } from '../../api.js'
 import useConsulta from '../../hooks/useConsulta.js'
 import { sonidoAcierto } from '../../sonidos.js'
 import { barajar } from '../../utiles.js'
@@ -14,19 +14,14 @@ function repartirCartas(personajes) {
   return barajar([...personajes, ...personajes])
 }
 
-// Descarga las fotos por adelantado para que aparezcan al instante al voltear.
-function precargarFotos(personajes) {
-  personajes.forEach((personaje) => {
-    new Image().src = personaje.image
-  })
-}
-
 function TableroMemoria({ onNuevaPartida }) {
   const consultar = useCallback(async (signal) => {
     // El Set vacío significa que no hay personajes excluidos: el sorteo ya
     // entrega personajes distintos, así que no se repiten en la partida.
     const personajes = await obtenerPersonajesAlAzar(PAREJAS, new Set(), signal)
-    precargarFotos(personajes)
+    // Con las fotos listas, aparecen al instante al voltear cada carta.
+    const fotos = personajes.map((personaje) => personaje.image)
+    await precargarFotos(fotos, signal)
     return repartirCartas(personajes)
   }, [])
   const { datos: cartas, error, reintentar } = useConsulta(consultar)

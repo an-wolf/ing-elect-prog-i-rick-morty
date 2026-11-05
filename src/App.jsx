@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import AlertaLimite from './components/comunes/AlertaLimite.jsx'
 import BotonArriba from './components/comunes/BotonArriba.jsx'
 import AdivinaEspecie from './pages/AdivinaEspecie.jsx'
 import AdivinaEstado from './pages/AdivinaEstado.jsx'
 import AdivinaGenero from './pages/AdivinaGenero.jsx'
+import EncuentraPersonaje from './pages/EncuentraPersonaje.jsx'
 import Episodio from './pages/Episodio.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Jugar from './pages/Jugar.jsx'
@@ -38,9 +40,12 @@ function App() {
           <Route path="/jugar/adivina-genero" element={<AdivinaGenero />} />
           <Route path="/jugar/adivina-especie" element={<AdivinaEspecie />} />
           <Route path="/jugar/memoriza" element={<Memoriza />} />
+          <Route path="/jugar/encuentra" element={<EncuentraPersonaje />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      <AlertaLimite />
 
       <div className="flotantes">
         <BotonArriba />
